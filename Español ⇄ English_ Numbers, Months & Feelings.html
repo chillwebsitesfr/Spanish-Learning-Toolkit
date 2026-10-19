@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Español ⇄ English: Numbers, Months & Feelings</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Young+Serif&display=swap">
+<style>
+:root{--bg:#f5f7fb;--surface:#fff;--ink:#14213d;--muted:#566079;--blue:#1d3fbf;--onblue:#fff;--gold:#f2b632;--line:#d9dfec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1730;--surface:#17213f;--ink:#eef1fa;--muted:#a6b0cb;--blue:#9bb0ff;--onblue:#0f1730;--line:#2a3560}}
+:root[data-theme="dark"]{--bg:#0f1730;--surface:#17213f;--ink:#eef1fa;--muted:#a6b0cb;--blue:#9bb0ff;--onblue:#0f1730;--line:#2a3560}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.5 Figtree,system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:28px 18px 56px}
+h1{font:400 clamp(1.9rem,7vw,2.7rem)/1.1 "Young Serif",Georgia,serif;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 24px}
+.tabs{display:flex;overflow-x:auto;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:20px}
+.tabs button{flex:1 0 auto;border:0;background:none;color:var(--muted);font:600 1rem Figtree,system-ui,sans-serif;padding:10px 14px;border-radius:8px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--blue);color:var(--onblue)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+input{width:100%;font:600 1.4rem Figtree,system-ui,sans-serif;padding:14px 16px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+input:focus{border-color:var(--blue)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
+.chips button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:6px 12px;font:400 .9rem Figtree,system-ui,sans-serif;cursor:pointer}
+.card{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:18px 20px}
+.big{font:400 2.4rem/1 "Young Serif",Georgia,serif;margin:0 0 14px;color:var(--blue)}
+.row{padding:10px 0;border-top:1px solid var(--line)}
+.row b{display:block;font-size:.85rem;color:var(--muted);font-weight:600}
+.row span{font-size:1.25rem;overflow-wrap:anywhere}
+.note,.hint,.err{font-size:.95rem;color:var(--muted);margin:10px 0 0}
+.err{color:var(--ink);border-left:4px solid #c0392b;padding-left:12px}
+ul{list-style:none;margin:16px 0 0;padding:0}
+li{padding:12px 0;border-top:1px solid var(--line)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.es{font:400 1.2rem "Young Serif",Georgia,serif;color:var(--blue)}
+.en{font-size:1.1rem}
+li .note{margin:4px 0 0}
+.empty{color:var(--muted)}
+[hidden]{display:none}
+footer{margin-top:32px;font-size:.88rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.card{animation:in .2s ease-out}@keyframes in{from{opacity:.4}to{opacity:1}}}
+</style>
+</head>
+<body>
+<main>
+<h1>Español ⇄ English</h1>
+<p class="sub">Numbers, months and feelings, translated both ways.</p>
+
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-t="num">Numbers</button>
+<button role="tab" aria-selected="false" data-t="mon">Months</button>
+<button role="tab" aria-selected="false" data-t="fee">Feelings</button>
+<button role="tab" aria-selected="false" data-t="foo">Food</button>
+<button role="tab" aria-selected="false" data-t="phr">Phrases</button>
+</div>
+
+<section id="num">
+<label for="n" class="hint" style="margin:0 0 6px;display:block">Type digits, Spanish words or English words (0 to 999,999,999)</label>
+<input id="n" autocomplete="off" inputmode="text" placeholder="e.g. 2026, treinta y uno, forty-two">
+<div class="chips" id="chips"></div>
+<div id="nout"></div>
+</section>
+
+<section id="mon" hidden>
+<input class="q" data-list="mlist" autocomplete="off" placeholder="Search a month in either language">
+<ul id="mlist"></ul>
+<p class="note">In Spanish, months are written in lowercase: <i>en marzo</i>. Dates read day first: <i>el 5 de mayo</i>.</p>
+</section>
+
+<section id="fee" hidden>
+<input class="q" data-list="flist" autocomplete="off" placeholder="Search a feeling in either language">
+<ul id="flist"></ul>
+<p class="note">Most feelings use <i>estar</i> or <i>sentirse</i>: <i>Estoy cansado</i> / <i>Me siento cansado</i>. Adjectives change with gender: cansado (m), cansada (f).</p>
+</section>
+
+<section id="foo" hidden>
+<input class="q" data-list="olist" autocomplete="off" placeholder="Search a food or drink in either language">
+<ul id="olist"></ul>
+<p class="note">Food words vary by country. Where Spain and Latin America differ, the note says which is which.</p>
+</section>
+
+<section id="phr" hidden>
+<input class="q" data-list="plist" autocomplete="off" placeholder="Search a phrase in either language">
+<ul id="plist"></ul>
+<p class="note">Spanish opens questions with ¿ and exclamations with ¡. <i>Tú</i> is informal and <i>usted</i> is formal; phrases below are informal unless noted.</p>
+</section>
+
+<footer>Numbers are built from Spanish and English grammar rules, then checked against what you typed. Months, feelings, food and phrases are hand-written lists; if a word is missing, this page says so instead of guessing.</footer>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const strip=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- Numbers ---------- */
+const U=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez','once','doce','trece','catorce','quince','dieciséis','diecisiete','dieciocho','diecinueve','veinte','veintiuno','veintidós','veintitrés','veinticuatro','veinticinco','veintiséis','veintisiete','veintiocho','veintinueve'];
+const T=['','','','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+const H=['','ciento','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos'];
+function es3(n,ap){
+  if(n===100)return 'cien';
+  const h=Math.floor(n/100),r=n%100;let s=h?H[h]:'';
+  if(r){const w=r<30?U[r]:T[Math.floor(r/10)]+(r%10?' y '+U[r%10]:'');s+=(s?' ':'')+w}
+  if(ap)s=s.replace(/veintiuno$/,'veintiún').replace(/uno$/,'un');
+  return s;
+}
+function es(n){
+  if(n===0)return 'cero';
+  const m=Math.floor(n/1e6),t=Math.floor(n/1000)%1000,r=n%1000,p=[];
+  if(m)p.push(m===1?'un millón':es3(m,true)+' millones');
+  if(t)p.push(t===1?'mil':es3(t,true)+' mil');
+  if(r)p.push(es3(r,false));
+  return p.join(' ');
+}
+const EU=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const ET=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function en3(n){
+  const h=Math.floor(n/100),r=n%100;let s=h?EU[h]+' hundred':'';
+  if(r){const w=r<20?EU[r]:ET[Math.floor(r/10)]+(r%10?'-'+EU[r%10]:'');s+=(s?' ':'')+w}
+  return s;
+}
+function en(n){
+  if(n===0)return 'zero';
+  const m=Math.floor(n/1e6),t=Math.floor(n/1000)%1000,r=n%1000,p=[];
+  if(m)p.push(en3(m)+' million');
+  if(t)p.push(en3(t)+' thousand');
+  if(r)p.push(en3(r));
+  return p.join(' ');
+}
+const ESV={},ENV={};
+U.forEach((w,i)=>ESV[strip(w)]=i);Object.assign(ESV,{un:1,una:1,veintiun:21,veintiuna:21,cien:100});
+T.forEach((w,i)=>{if(w)ESV[strip(w)]=i*10});H.forEach((w,i)=>{if(w)ESV[strip(w)]=i*100});
+EU.forEach((w,i)=>ENV[w]=i);ET.forEach((w,i)=>{if(w)ENV[w]=i*10});
+const toks=(s,isEs)=>strip(s).replace(/[^a-z\s-]/g,' ').split(/[\s-]+/).filter(w=>w&&w!==(isEs?'y':'and'));
+function parse(tk,isEs){
+  if(!tk.length)return null;
+  const D=isEs?ESV:ENV,TH=isEs?'mil':'thousand';
+  let M=0,Th=0,c=0;
+  for(const w of tk){
+    if(w===TH){Th+=(c||1)*1000;c=0}
+    else if(isEs?(w==='millon'||w==='millones'):w==='million'){M+=((Th+c)||1)*1e6;Th=0;c=0}
+    else if(!isEs&&w==='hundred'){c=(c||1)*100}
+    else if(D[w]!==undefined)c+=D[w];
+    else return null;
+  }
+  return M+Th+c;
+}
+const norm=(s,isEs)=>strip(s).replace(isEs?/$^/:/\band\b/g,'').replace(/[^a-z]/g,'');
+const CHIPS=['21','1500','2026','treinta y uno','dieciséis','one hundred twenty-five','cien mil','veintiún mil'];
+$('chips').innerHTML=CHIPS.map(c=>`<button type="button">${c}</button>`).join('');
+$('chips').onclick=e=>{if(e.target.tagName==='BUTTON'){$('n').value=e.target.textContent;runNum()}};
+
+function runNum(){
+  const raw=$('n').value.trim(),out=$('nout');
+  const err=m=>out.innerHTML=`<p class="err">${m}</p>`;
+  if(!raw){out.innerHTML='<p class="hint">The translation appears here.</p>';return}
+  let n=null,lang=null,notes=[];
+  if(/^[\d.,\s]+$/.test(raw)){
+    if(/^\d+$/.test(raw)||/^\d{1,3}([.,\s]\d{3})+$/.test(raw)){
+      n=+raw.replace(/[.,\s]/g,'');
+      if(/,/.test(raw))notes.push('Read as the whole number '+n.toLocaleString('en-US')+'. In Spanish, a comma can mean a decimal point, so check this is what you meant.');
+    }else return err('Only whole numbers are supported. Decimals such as 1.5 aren’t converted here.');
+  }else{
+    n=parse(toks(raw,true),true);lang='es';
+    if(n===null){n=parse(toks(raw,false),false);lang='en'}
+    if(n===null)return err('Couldn’t read “'+esc(raw)+'” as a number. Check the spelling, or use digits.');
+  }
+  if(n>999999999)return err('This page supports numbers up to 999,999,999.');
+  const S=es(n),E=en(n);
+  if(lang){
+    const canon=lang==='es'?S:E;
+    if(norm(raw,lang==='es')!==norm(canon,lang==='es'))notes.push('Standard spelling: <b>'+canon+'</b>. Your wording was read as '+n.toLocaleString('en-US')+'.');
+  }
+  if(/(^|\s)(veintiuno|uno)$/.test(S))notes.push('Before a noun, Spanish shortens this: <i>un libro</i>, <i>una casa</i>, <i>veintiún libros</i>.');
+  if(n%1000>=101&&n%100!==0)notes.push('British English usually adds “and” after hundreds: one hundred <b>and</b> twenty-five.');
+  out.innerHTML=`<div class="card"><p class="big">${n.toLocaleString('en-US')}</p>
+  <div class="row"><b>Español${lang==='es'?' (what you typed)':''}</b><span lang="es">${S}</span></div>
+  <div class="row"><b>English${lang==='en'?' (what you typed)':''}</b><span lang="en">${E}</span></div>
+  <div class="row"><b>Written in digits</b><span>Spanish usually ${n.toLocaleString('de-DE')} · English ${n.toLocaleString('en-US')}</span></div>
+  ${notes.filter(Boolean).map(x=>`<p class="note">${x}</p>`).join('')}</div>`;
+}
+$('n').addEventListener('input',runNum);runNum();
+
+/* ---------- Months & feelings ---------- */
+const MONTHS=[
+['enero','January'],['febrero','February'],['marzo','March'],['abril','April'],['mayo','May'],['junio','June'],['julio','July'],['agosto','August'],
+['septiembre','September','Also spelled <i>setiembre</i>, which is valid but less common.'],['octubre','October'],['noviembre','November'],['diciembre','December']];
+const FEEL=[
+['feliz','happy','<i>Estoy feliz.</i> Same form for masculine and feminine.'],
+['contento / contenta','glad, pleased','<i>Estoy contento.</i>'],
+['alegre','cheerful','<i>Estoy alegre.</i>'],
+['triste','sad','<i>Estoy triste.</i>'],
+['enojado / enojada','angry','Used in Latin America. In Spain, say <i>enfadado</i>.'],
+['enfadado / enfadada','angry','Common in Spain.'],
+['furioso / furiosa','furious',''],
+['nervioso / nerviosa','nervous',''],
+['ansioso / ansiosa','anxious','Can also mean eager: <i>ansioso por verte</i>.'],
+['preocupado / preocupada','worried',''],
+['asustado / asustada','scared, frightened',''],
+['tener miedo','to be afraid','<i>Tengo miedo.</i> Literally “I have fear”.'],
+['cansado / cansada','tired',''],
+['agotado / agotada','exhausted',''],
+['aburrido / aburrida','bored','<i>Estoy aburrido</i> = I’m bored. <i>Soy aburrido</i> = I’m boring.'],
+['emocionado / emocionada','excited','Can also mean emotionally moved.'],
+['sorprendido / sorprendida','surprised',''],
+['avergonzado / avergonzada','embarrassed, ashamed','Also <i>tener vergüenza</i>.'],
+['orgulloso / orgullosa','proud',''],
+['celoso / celosa','jealous',''],
+['solo / sola','lonely, alone','<i>Me siento solo</i> = I feel lonely.'],
+['confundido / confundida','confused',''],
+['decepcionado / decepcionada','disappointed','Not “deceived”. That is <i>engañado</i>.'],
+['frustrado / frustrada','frustrated',''],
+['estresado / estresada','stressed',''],
+['tranquilo / tranquila','calm',''],
+['relajado / relajada','relaxed',''],
+['agradecido / agradecida','grateful',''],
+['esperanzado / esperanzada','hopeful',''],
+['enamorado / enamorada','in love','<i>Estoy enamorado de ti.</i>'],
+['deprimido / deprimida','depressed',''],
+['nostálgico / nostálgica','nostalgic',''],
+['harto / harta','fed up','<i>Estoy harto de esto.</i>'],
+['culpable','guilty','<i>Me siento culpable.</i>'],
+['asqueado / asqueada','disgusted','Also <i>me da asco</i> = it disgusts me.'],
+['tener hambre','to be hungry','<i>Tengo hambre.</i> Literally “I have hunger”.'],
+['tener sed','to be thirsty','<i>Tengo sed.</i>'],
+['tener sueño','to be sleepy','<i>Tengo sueño.</i>'],
+['tener frío','to be cold','<i>Tengo frío</i> (a person). For weather, <i>hace frío</i>.'],
+['tener calor','to be hot','<i>Tengo calor</i> (a person). For weather, <i>hace calor</i>.'],
+['el amor','love','<i>Te quiero</i> is affectionate and widely used. <i>Te amo</i> is stronger and more romantic.'],
+['la felicidad','happiness',''],
+['la alegría','joy',''],
+['la tristeza','sadness',''],
+['el miedo','fear',''],
+['la ira','anger, rage','Stronger than <i>el enojo</i> (anger).'],
+['la esperanza','hope',''],
+['la soledad','loneliness','']];
+const FOOD=[
+['el agua','water',''],['el pan','bread',''],['la leche','milk',''],['el queso','cheese',''],['el huevo','egg',''],
+['la carne','meat',''],['el pollo','chicken',''],['el pescado','fish (as food)','A live fish is <i>un pez</i>.'],
+['el cerdo','pork, pig','Also <i>la carne de cerdo</i> for the meat.'],['la carne de res','beef','Latin America. In Spain, <i>ternera</i> or <i>vaca</i> is used.'],
+['el jamón','ham',''],['el arroz','rice',''],['los frijoles','beans','Latin America. Spain: <i>las judías</i> or <i>las alubias</i>.'],
+['la pasta','pasta',''],['la sopa','soup',''],['la ensalada','salad',''],['la verdura','vegetable(s)','Often used for vegetables in general.'],['la fruta','fruit',''],
+['la manzana','apple',''],['el plátano','banana','Spain. Many Latin American countries say <i>la banana</i>; in some, <i>plátano</i> means plantain.'],
+['la naranja','orange',''],['el limón','lemon','In Mexico, <i>limón</i> usually means lime.'],['la fresa','strawberry',''],['las uvas','grapes',''],
+['la papa','potato','Latin America. Spain: <i>la patata</i>.'],['el tomate','tomato',''],['la cebolla','onion',''],['el ajo','garlic',''],['la zanahoria','carrot',''],['la lechuga','lettuce',''],
+['el maíz','corn',''],['el aguacate','avocado','Also <i>la palta</i> in parts of South America.'],
+['el cacahuete','peanut','Spain. Mexico: <i>el cacahuate</i>. Elsewhere: <i>el maní</i>.'],
+['el café','coffee',''],['el té','tea',''],['el jugo','juice','Latin America. Spain: <i>el zumo</i>.'],['la cerveza','beer',''],['el vino','wine',''],
+['el azúcar','sugar','Masculine: <i>el azúcar</i>.'],['la sal','salt',''],['la pimienta','pepper (black)',''],['el aceite','oil',''],['la mantequilla','butter',''],
+['el helado','ice cream',''],['el pastel','cake','Latin America. Spain: <i>la tarta</i>.'],['la galleta','cookie, cracker',''],
+['la comida','food, meal',''],['el desayuno','breakfast',''],['el almuerzo','lunch','In Spain, the main midday meal is often called <i>la comida</i>.'],['la cena','dinner',''],
+['el bocadillo','sandwich (on a baguette)','Spain. <i>El sándwich</i> is also used.'],
+['picante','spicy, hot',''],['vegetariano / vegetariana','vegetarian',''],['alérgico / alérgica a','allergic to','<i>Soy alérgico a los mariscos.</i> = I’m allergic to shellfish.']];
+const PHRASES=[
+['Hola','Hello',''],['Buenos días','Good morning','Used until about midday.'],['Buenas tardes','Good afternoon','Used from midday until dark.'],['Buenas noches','Good evening, good night','Works as both a greeting and a goodbye at night.'],
+['Adiós','Goodbye',''],['Hasta luego','See you later',''],['Hasta mañana','See you tomorrow',''],
+['Por favor','Please',''],['Gracias','Thank you','<i>Muchas gracias</i> = thank you very much.'],['De nada','You’re welcome',''],
+['Perdón','Excuse me, sorry','To get attention or apologize for a small slip. More formal: <i>disculpe</i>.'],['Con permiso','Excuse me (to pass by)',''],['Lo siento','I’m sorry','For an apology or sympathy.'],
+['¿Cómo estás?','How are you?','Formal: <i>¿Cómo está usted?</i>'],['Estoy bien, gracias','I’m fine, thank you',''],
+['¿Cómo te llamas?','What’s your name?','Formal: <i>¿Cómo se llama?</i>'],['Me llamo…','My name is…',''],['Mucho gusto','Nice to meet you','Also <i>encantado</i> (m) or <i>encantada</i> (f).'],
+['¿De dónde eres?','Where are you from?','Formal: <i>¿De dónde es usted?</i>'],['Soy de…','I’m from…',''],
+['No entiendo','I don’t understand',''],['No sé','I don’t know',''],['Sí / No','Yes / No',''],
+['¿Hablas inglés?','Do you speak English?','Formal: <i>¿Habla inglés?</i>'],['Hablo un poco de español','I speak a little Spanish',''],
+['Más despacio, por favor','More slowly, please',''],['¿Puedes repetir, por favor?','Can you repeat that, please?','Formal: <i>¿Puede repetir, por favor?</i>'],
+['¿Cuánto cuesta?','How much does it cost?',''],['Quisiera un café, por favor','I would like a coffee, please','<i>Quisiera</i> is a polite way to ask for something.'],
+['La cuenta, por favor','The check, please','Said in restaurants. British English: “the bill”.'],['¡Buen provecho!','Enjoy your meal!',''],
+['¿Dónde está el baño?','Where is the bathroom?','Spain also uses <i>los servicios</i> or <i>los aseos</i>.'],
+['¿Qué hora es?','What time is it?',''],['Necesito ayuda','I need help',''],['¡Ayuda!','Help!',''],
+['¡Bienvenido!','Welcome!','Changes with gender and number: bienvenida, bienvenidos, bienvenidas.'],
+['¡Feliz cumpleaños!','Happy birthday!',''],['¡Buena suerte!','Good luck!',''],['¡Salud!','Cheers! (also: bless you)','']];
+function list(id,data,q){
+  const s=strip(q.trim()),rows=data.filter(d=>!s||strip(d[0]+' '+d[1]).includes(s));
+  $(id).innerHTML=rows.length?rows.map(d=>`<li><div class="pair"><span class="es" lang="es">${d[0]}</span><span class="en" lang="en">${d[1]}</span></div>${d[2]?`<p class="note">${d[2]}</p>`:''}</li>`).join(''):`<li class="empty">Nothing matches “${esc(q)}”. It may not be in this list yet. Check the spelling or try the other language.</li>`;
+}
+const DATA={mlist:MONTHS,flist:FEEL,olist:FOOD,plist:PHRASES};
+document.querySelectorAll('.q').forEach(i=>i.addEventListener('input',()=>list(i.dataset.list,DATA[i.dataset.list],i.value)));
+list('mlist',MONTHS,'');list('flist',FEEL,'');list('olist',FOOD,'');list('plist',PHRASES,'');
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  ['num','mon','fee','foo','phr'].forEach(t=>$(t).hidden=t!==b.dataset.t);
+});
+</script>
+</body>
+</html>
